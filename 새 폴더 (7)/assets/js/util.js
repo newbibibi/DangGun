@@ -268,11 +268,11 @@
 					$('#nav li').hover(
 						function() {
 							// 마우스가 들어왔을 때
-							$(this).find('ol').stop().slideDown(500);
+							$(this).find('ol').stop().slideDown(100);
 						},
 						function() {
 							// 마우스가 나갔을 때
-							$(this).find('ol').stop().slideUp(500);
+							$(this).find('ol').stop().slideUp(200);
 						}
 					);
 				});
