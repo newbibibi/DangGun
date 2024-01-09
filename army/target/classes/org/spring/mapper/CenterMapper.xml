@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.spring.mapper.CenterMapper">
+	<select id="saleListAll" resultType="SaleVO">
+		select * from sale
+	</select>
+<select id="getTotalCount" resultType="int" parameterType="org.spring.domain.Criteria">
+    SELECT COUNT('sno') FROM sale
+    <if test="type != null and type != ''">
+        <where>
+            <choose>
+                <when test='type.equals("S")'>
+                    area LIKE "서울"
+                </when>
+				<when test='type.equals("G")'>
+                    area IN ("경기","인천")
+                </when>
+                <when test='type.equals("W")'>
+                    area LIKE "강원"
+                </when>
+                <when test='type.equals("C")'>
+                    area IN ("충청","충남","충북")
+                </when>
+                <when test='type.equals("L")'>
+                    area IN ("전라","전남","전북")
+                </when>
+                <when test='type.equals("Y")'>
+                    area IN ("경상",'경남','경북','대구','부산')
+                </when>
+                <when test='type.equals("J")'>
+                    area LIKE "제주"
+                </when>
+            </choose>
+        </where>
+    </if>
+</select>
+	
+<select id="saleList" resultType="SaleVO" parameterType="org.spring.domain.Criteria">
+    SELECT * FROM sale
+    <if test="type != null and type != ''">
+        <where>
+            <choose>
+                <when test='type.equals("S")'>
+                    area LIKE "서울"
+                </when>
+				<when test='type.equals("G")'>
+                    area IN ("경기","인천")
+                </when>
+                <when test='type.equals("W")'>
+                    area LIKE "강원"
+                </when>
+                <when test='type.equals("C")'>
+                    area IN ("충청","충남","충북")
+                </when>
+                <when test='type.equals("L")'>
+                    area IN ("전라","전남","전북")
+                </when>
+                <when test='type.equals("Y")'>
+                    area IN ("경상",'경남','경북','대구','부산')
+                </when>
+                <when test='type.equals("J")'>
+                    area LIKE "제주"
+                </when>
+            </choose>
+        </where>
+    </if>
+    ORDER BY 'sno' DESC
+    LIMIT #{start}, #{amount}
+</select>
+<select id="listFAQ" resultType="FAQVO" parameterType="FAQVO">
+	SELECT * FROM faq
+		<where>
+			<choose>
+				<when test='category.equals("H")'>
+					category LIKE "홈페이지"
+				</when>
+				<when test='category.equals("A")'>
+					category LIKE "계정"
+				</when>
+			</choose>
+		</where>
+</select>
+	
+	
+</mapper>
