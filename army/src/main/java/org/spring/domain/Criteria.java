@@ -5,7 +5,8 @@ import lombok.Data;
 
 @Data
 public class Criteria {
-
+	private String nickname;
+	
 	private int pageNum;
 	
 	private int amount;

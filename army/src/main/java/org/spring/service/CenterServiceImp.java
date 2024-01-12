@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.spring.domain.Criteria;
 import org.spring.domain.FAQVO;
+import org.spring.domain.FileVO;
 import org.spring.domain.MenuVO;
 import org.spring.domain.NoticeVO;
 import org.spring.domain.QuestionsVO;
@@ -81,39 +82,35 @@ public class CenterServiceImp implements CenterService{
 	}
 
 	@Override
-	public List<QuestionsVO> FqnaListAll() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<QuestionsVO> FqnaListAll(Criteria cri) {
+		return centerMapper.questionListAll(cri);
 	}
 
 	@Override
-	public List<QuestionsVO> searchFqna(String search) {
+	public List<QuestionsVO> searchFqna(String nickname, String search) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public QuestionsVO selectFqna(int qno) {
-		// TODO Auto-generated method stub
-		return null;
+		return centerMapper.showQuestion(qno);
 	}
 
 	@Override
 	public int addFqna(QuestionsVO vo) {
-		// TODO Auto-generated method stub
-		return 0;
+
+		return centerMapper.createQuestion(vo);
 	}
 
 	@Override
 	public int modifyFqna(QuestionsVO vo) {
-		// TODO Auto-generated method stub
-		return 0;
+		return centerMapper.modifyQuestion(vo);
 	}
 
 	@Override
 	public int delFqna(int qno) {
-		// TODO Auto-generated method stub
-		return 0;
+		return centerMapper.removeQuestion(qno);
 	}
 
 	@Override
@@ -121,5 +118,33 @@ public class CenterServiceImp implements CenterService{
 		log.info("페이지수확인");
 		return centerMapper.getTotalCount(cri);
 	}
+
+	@Override
+	public int getfqnaTotal(Criteria cri) {
+		return centerMapper.getFqnaTotalCount(cri);
+	}
+
+	@Override
+	public List<QuestionsVO> myFqnaList(Criteria cri) {
+		System.out.println("start"+cri.getStart());
+		return centerMapper.myQuestionList(cri);
+	}
+
+	@Override
+	public int maxqno() {
+		return centerMapper.maxQno();
+	}
+
+	@Override
+	public int upload(FileVO vo) {
+		return centerMapper.uploadData(vo);
+	}
+
+	@Override
+	public List<FileVO> fileList(int qno) {
+		System.out.println("확인용");
+		return centerMapper.getFileList(qno);
+	}
+
 
 }

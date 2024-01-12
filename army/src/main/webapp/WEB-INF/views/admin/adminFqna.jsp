@@ -90,42 +90,27 @@
 <body>
 	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 	<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-	<h1>혜택</h1>
+	<h1>관리자 문의확인창</h1>
+	
 	<div id="page-wrapper">
-		<form id="searchForm" action="/center/information/benefit"
-			method="get">
-			<div class="">
-				<select id="type" class="" name="type">
-					<option value=""
-						<c:out value="${pageMaker.cri.type == null?'selected':''}"/>>전체</option>
-					<option value="S"
-						<c:out value="${pageMaker.cri.type == 'S'?'selected':''}"/>>서울</option>
-					<option value="G"
-						<c:out value="${pageMaker.cri.type == 'G'?'selected':''}"/>>경기</option>
-					<option value="W"
-						<c:out value="${pageMaker.cri.type == 'W'?'selected':''}"/>>강원</option>
-					<option value="C"
-						<c:out value="${pageMaker.cri.type == 'C'?'selected':''}"/>>충청</option>
-					<option value="L"
-						<c:out value="${pageMaker.cri.type == 'L'?'selected':''}"/>>전라</option>
-					<option value="Y"
-						<c:out value="${pageMaker.cri.type == 'Y'?'selected':''}"/>>경상</option>
-					<option value="J"
-						<c:out value="${pageMaker.cri.type == 'J'?'selected':''}"/>>제주</option>
-				</select>
-			</div>
-		</form>
+	<form id="searchForm" action="/admin/adminFqna" method="get">
+		<div class="">
+			<select id="type" class="" name="type">
+				<option value=""
+					<c:out value="${pageMaker.cri.type == null?'selected':''}"/>>전체</option>
+				<option value="O"
+					<c:out value="${pageMaker.cri.type == 'O'?'selected':''}"/>>해결</option>
+				<option value="X"
+					<c:out value="${pageMaker.cri.type == 'X'?'selected':''}"/>>미해결</option>
+			</select>
+		</div>
+	</form>
 		<table width="100%" class="">
 			<thead>
 				<tr>
-					<th>지역</th>
-					<th>혜택대상</th>
-					<th>혜택종류</th>
-					<th>혜택내용</th>
-					<th>혜택시작일</th>
-					<th>혜택종료일</th>
-					<th>전화번호</th>
-					<th>링크</th>
+					<th>제목</th>
+					<th>작성자</th>
+					<th>답변유무</th>
 				</tr>
 			</thead>
 			<tbody></tbody>
@@ -149,8 +134,7 @@
 				</c:if>
 			</ul>
 		</div>
-		<form id="actionForm" action="/center/information/benefit"
-			method="get">
+		<form id="actionForm" action="/admin/adminFqna" method="get">
 			<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum }">
 			<input type="hidden" name="amount" value="${pageMaker.cri.amount }">
 			<input type="hidden" name="type" value="${pageMaker.cri.type }">
@@ -165,7 +149,7 @@
 
 					function loadTableData() {
 						$.ajax({
-							url : "/center/information/getList",
+							url : "/admin/adminFqnaList",
 							type : "POST",
 							dataType : "json",
 							data : {
@@ -177,25 +161,18 @@
 							},
 							success : function(data) {
 								let boardTbody = $("tbody");
-								$.each(data, function(index, sale) {
-
+								$.each(data, function(index, fqna) {
 									let row = $("<tr>");
-									row.append($("<td>").text(sale.area));
-									row.append($("<td>").text(sale.item));
-									row.append($("<td>").text(sale.salename));
-									row.append($("<td>").text(sale.detail));
-									row.append($("<td>").text(sale.start));
-									row.append($("<td>").text(sale.end));
-									row.append($("<td>").text(sale.phone));
-									if (sale.homepage !== null
-											&& sale.homepage !== '') {
-										let link = $("<button>").text("더 보기")
-												.on("click", function() {
-													openPop(sale.homepage);
-												});
-										let linktd = $("<td>").append(link);
-										row.append(linktd);
+									let titleLink = $("<a>").attr("href","/admin/fqnaAnswer?qno="+fqna.qno).text(fqna.title);
+									let titleTd = $("<td>").append(titleLink);
+									row.append(titleTd);
+									row.append($("<td>").text(fqna.nickname));
+									if (fqna.answer === null) {
+										row.append($("<td>").text("미답변"));
+									} else {
+										row.append($("<td>").text("답변"));
 									}
+
 									boardTbody.append(row);
 								});
 							},
@@ -213,20 +190,13 @@
 											.val($(this).attr("href"));
 									actionForm.submit();
 								});
-						
-
-
-						function openPop(url) {
-							var popup = window.open(url, '팝업창',
-									'width=700px,height=800px');
-						}
 
 					}// loadTableData 함수 선언 종료
-					
+
 				}); // $(document).ready 함수 선언 종료
-				$('#type').change(function() {
-					$('#searchForm').submit();
-				});
+		$('#type').change(function() {
+			$('#searchForm').submit();
+		});
 	</script>
 </body>
 
