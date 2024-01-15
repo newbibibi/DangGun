@@ -3,10 +3,11 @@ package org.spring.service;
 import java.util.List;
 
 import org.spring.domain.CalendarVO;
-import org.spring.domain.UserVO;
+import org.springframework.stereotype.Service;
 
+@Service
 public interface UserService {
-	public int modifyInfo(UserVO vo);
+	public int modifyInfo(String col,String val,String key);
 	public List<CalendarVO> calenderListAll(String nickname);
 	public int addCal(CalendarVO vo);
 	public int modifyCal(CalendarVO vo);
